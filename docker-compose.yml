@@ -23,6 +23,7 @@ services:
       - prod.env
     depends_on:
       - db
+      - web
     ports:
       - "${API_PORT}:${API_PORT}"
   web:
