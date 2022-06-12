@@ -1,7 +1,7 @@
 {% extends "layout.jinja2" %}
 
 {% block content %}
-<table class="table">
+<table class="table table-striped ">
   <thead>
     <tr>
       <th scope="col">Date</th>
@@ -11,10 +11,11 @@
       <th scope="col">Visit</th>
       <th scope="col">Scene</th>
       <th scope="col">Camera</th>
+      <th scope="col">Data</th>
     </tr>
   </thead>
   <tbody>
-    {% for document in paginated_documents.items %}
+    {% for (document, user, place, scene, visit) in paginated_documents.items %}
         <tr>
           <td>
           <span class="badge text-bg-secondary">
@@ -26,37 +27,34 @@
             <span class="badge rounded-pill text-bg-light">{{document.guid}}</span>
           </td>
           <td>
-            <code data-bs-toggle="tooltip" title="ext_id: {{document.user.ext_id}}">
+            <span class="badge rounded-pill text-bg-light">{{user.ext_id}}</span>
+          </td>
+          <td>
+            <code data-bs-toggle="tooltip" title="ext_id: {{place.ext_id}}">
                 <i class="bi bi-info-circle"></i>
-                 id: {{document.user_id}}
+                {{place.address}}
             </code>
           </td>
           <td>
-            <code data-bs-toggle="tooltip" title="ext_id: {{document.place.ext_id}}">
-                <i class="bi bi-info-circle"></i>
-                {{document.place.address}}
-            </code>
+            <span class="badge rounded-pill text-bg-light">{{visit.ext_id}}</span>
           </td>
           <td>
-            <code data-bs-toggle="tooltip" title="ext_id: {{document.visit.ext_id}}">
-                <i class="bi bi-info-circle"></i>
-                id: {{document.visit_id}} | user_id: ({{document.visit.user_id}})
-            </code>
-          </td>
-          <td>
-            <code data-bs-toggle="tooltip" title="ext_id: {{document.scene.ext_id}}">
-                <i class="bi bi-info-circle"></i>
-                id: {{document.scene_id}}
-            </code>
+            <span class="badge rounded-pill text-bg-light">{{scene.ext_id}}</span>
           </td>
           <td>
             {{document.camera or '-'}}
           </td>
+          <td>
+              <code data-bs-toggle="tooltip" data-bs-html="true" title="{{document.data}}">
+                <i class="bi bi-info-circle"></i>
+                source
+            </code>
+          </td>
         </tr>
     {% endfor %}
   </tbody>
-</table>
-<nav aria-label="Page navigation example">
+  <caption>
+  <nav aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item {% if not paginated_documents.previous_page %}disabled{% endif %}">
         <a class="page-link" href="?page={{paginated_documents.previous_page}}" aria-label="Previous">
@@ -72,5 +70,6 @@
   </ul>
   Total: {{paginated_documents.item_count}} documents and {{paginated_documents.page_count}} pages.
 </nav>
-
+  </caption>
+</table>
 {% endblock %}
