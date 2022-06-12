@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt
 COPY . $APP_HOME
 RUN pip install -e .
 
-CMD alembic -c production.ini upgrade head && gunicorn --paste production.ini --bind=0.0.0.0:$WEB_APP_PORT
+CMD alembic -c production.ini upgrade head && gunicorn --paste production.ini --bind=0.0.0.0:$WEB_APP_PORT --workers=4 --timeout=180
