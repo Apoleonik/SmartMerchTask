@@ -17,5 +17,5 @@ def index_view(request):
     page = _parse_page_param(request) or 1
     query = request.dbsession.query(models.Document)
     paginated_queryset = SqlalchemyOrmPage(query, page=page, items_per_page=DEFAULT_PAGE_SIZE)
-    print(dir(paginated_queryset))
+
     return {'paginated_documents': paginated_queryset}
