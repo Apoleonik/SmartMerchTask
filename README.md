@@ -1,23 +1,23 @@
 - docker
 - python 3.10.4
 - postgres 13
-- ports 5432,7654,7655
+- ports db: 5432, api: 7654, web: 7655
 
 Этапы запуска (необходимо находиться в папке проекта):
 
 ---
-**Запуск БД**
-1. docker-compose --env-file ./prod.env up -d db
+**Запуск сервисов db, api, web(pyramid)**
+
+1. docker-compose --env-file ./prod.env up -d
 
 ---
-**Запуск приложения pyramid**
+**Запуск скрипта на загрузку данных**
+
 1. python -m venv venv
 2. .\venv\Scripts\activate
-3. cd app
+3. cd upload_script
 4. pip install -r requirements.txt
-5. pip install -e git+https://github.com/pylons/pyramid.git@master#egg=pyramid
-6. alembic -c production.ini upgrade head
-
-----
-1. python3 -m venv venv
-2. pip install -e .
+5. python main.py
+    - python main.py -t 1 -u http://localhost:7654/upload/document/
+    - аргумент -t кол-во потоков
+    - аргумент -u ссылка для загрузки
