@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: smart_merch_task_db
+    image: postgres:13.0-alpine
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - PGDATA=/var/lib/postgresql/data/mnt
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+  api:
+    container_name: aiohttp_api
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    env_file:
+      - prod.env
+    depends_on:
+      - db
+    ports:
+      - "${API_PORT}:${API_PORT}"
+  web:
+    container_name: pyramid_web
+    build : ./app
+    env_file:
+      - prod.env
+    depends_on:
+      - db
+    ports:
+      - "${WEB_APP_PORT}:${WEB_APP_PORT}"
+volumes:
+  pgdata:
