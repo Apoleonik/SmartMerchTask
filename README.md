@@ -13,7 +13,7 @@
 ---
 **Запуск сервисов db, api, web(pyramid)**
 ```
-1. docker-compose --env-file ./prod.env up -d
+1. docker-compose --env-file ./prod.env up -d --build
 ```
 
 ---
